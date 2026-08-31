@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学習指導案 5年生 Unit3 | 小学校外国語研究サイト</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #f5f7fa;
+      color: #1e2d4a;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 32px auto;
+      background: #ffffff;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* ヘッダー */
+    .doc-header {
+      background: linear-gradient(135deg, #1a2e5a 0%, #1a4a6a 60%, #1a7a7a 100%);
+      padding: 32px 40px 24px;
+      color: white;
+    }
+
+    .doc-header__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .doc-header__title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .doc-header__subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .doc-header__meta {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .doc-header__meta-item {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .doc-header__meta-item strong {
+      color: rgba(255,255,255,0.95);
+      display: block;
+      font-size: 13px;
+    }
+
+    /* 本文 */
+    .doc-body {
+      padding: 32px 40px 48px;
+    }
+
+    /* セクション */
+    .doc-section {
+      margin-bottom: 28px;
+    }
+
+    .doc-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a2e5a;
+      border-left: 3px solid #1a7a7a;
+      padding-left: 10px;
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    /* テーブル */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid #dde3f0;
+      padding: 9px 12px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f4fb;
+      font-weight: 700;
+      color: #1a2e5a;
+      width: 140px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) td { background: #fafbfd; }
+
+    /* 目標リスト */
+    .goal-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .goal-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .goal-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .badge-en   { background: #dbeafe; color: #1d4ed8; }
+    .badge-comm { background: #d1fae5; color: #065f46; }
+    .badge-att  { background: #fef3c7; color: #92400e; }
+
+    /* 展開表 */
+    .flow-table th {
+      width: 80px;
+      text-align: center;
+    }
+
+    .flow-table .time-cell {
+      text-align: center;
+      font-weight: 700;
+      color: #1a7a7a;
+    }
+
+    .step-label {
+      display: inline-block;
+      background: #1a7a7a;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    /* フッター */
+    .doc-footer {
+      background: #f0f4fb;
+      border-top: 1px solid #dde3f0;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #8892b0;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; }
+      .doc-footer { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .doc-header, .doc-body { padding: 20px; }
+      .doc-header__title { font-size: 17px; }
+      .doc-footer { flex-direction: column; gap: 4px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ヘッダー -->
+  <div class="doc-header">
+    <div class="doc-header__label">学習指導案</div>
+    <div class="doc-header__title">What do you want to study?</div>
+    <div class="doc-header__subtitle">第5学年 外国語科 Unit 3</div>
+    <div class="doc-header__meta">
+      <div class="doc-header__meta-item">
+        <strong>実施日</strong>2026年10月1日（木）
+      </div>
+      <div class="doc-header__meta-item">
+        <strong>対象</strong>5年1組（34名）
+      </div>
+      <div class="doc-header__meta-item">
+        <strong>指導者</strong>◯◯ ◯◯
+      </div>
+      <div class="doc-header__meta-item">
+        <strong>場所</strong>5年1組教室
+      </div>
+    </div>
+  </div>
+
+  <!-- 本文 -->
+  <div class="doc-body">
+
+    <!-- 単元について -->
+    <div class="doc-section">
+      <div class="doc-section-title">単元について</div>
+      <p style="font-size:13px;line-height:1.8;color:#3a4a6a;">
+        本単元では、「教科」についての語彙を扱いながら、自分が学びたい教科とその理由を伝えるコミュニケーション活動を行う。
+        中学校で学びたい教科を互いに尋ねたり答えたりする場面を設定し、相手意識をもって英語でやり取りする力を育てる。
+      </p>
+    </div>
+
+    <!-- 単元の目標 -->
+    <div class="doc-section">
+      <div class="doc-section-title">単元の目標</div>
+      <ul class="goal-list">
+        <li>
+          <span class="goal-badge badge-en">英語</span>
+          中学校で学びたい教科について、"I want to study ～. Because ～." の表現を使って伝え合うことができる。
+        </li>
+        <li>
+          <span class="goal-badge badge-comm">コミュ</span>
+          相手の話を聞き、理解したことや感想などを返しながら会話を続けようとすることができる。
+        </li>
+        <li>
+          <span class="goal-badge badge-att">態度</span>
+          英語を使うことへの積極的な姿勢を持ち、コミュニケーションを楽しもうとする。
+        </li>
+      </ul>
+    </div>
+
+    <!-- 使用する表現 -->
+    <div class="doc-section">
+      <div class="doc-section-title">使用する主な表現</div>
+      <table>
+        <tr><th>尋ねる表現</th><td>What do you want to study?</td></tr>
+        <tr><th>答える表現</th><td>I want to study math. / I like math.</td></tr>
+        <tr><th>理由を述べる</th><td>Because it's interesting. / Because I'm good at it.</td></tr>
+        <tr><th>教科の語彙</th><td>math, science, music, P.E., Japanese, social studies, art, English</td></tr>
+      </table>
+    </div>
+
+    <!-- 本時の展開 -->
+    <div class="doc-section">
+      <div class="doc-section-title">本時の展開（45分）</div>
+      <table class="flow-table">
+        <thead>
+          <tr>
+            <th>時間</th>
+            <th>段階</th>
+            <th>学習活動</th>
+            <th>指導上の留意点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">5分</td>
+            <td><span class="step-label">導入</span></td>
+            <td>
+              ・挨拶、Small Talk<br>
+              ・前時の振り返り
+            </td>
+            <td>
+              ・テンポよく全体で音読し、授業への意欲を高める。
+            </td>
+          </tr>
+          <tr>
+            <td class="time-cell">10分</td>
+            <td><span class="step-label">確認</span></td>
+            <td>
+              ・教科の語彙を確認（フラッシュカード）<br>
+              ・モデル対話を聞く
+            </td>
+            <td>
+              ・絵カードを使って発音を確認し、語彙の定着を図る。<br>
+              ・教師がALTとモデル対話を示し、表現のイメージをもたせる。
+            </td>
+          </tr>
+          <tr>
+            <td class="time-cell">20分</td>
+            <td><span class="step-label">展開</span></td>
+            <td>
+              ・インタビュー活動<br>
+              　（クラスメート5人以上と会話）<br>
+              ・ワークシートへの記録
+            </td>
+            <td>
+              ・"What do you want to study?" を使って積極的に関わらせる。<br>
+              ・理由を添えることで、対話が広がるよう促す。<br>
+              ・机間指導でフィードバックを行う。
+            </td>
+          </tr>
+          <tr>
+            <td class="time-cell">7分</td>
+            <td><span class="step-label">共有</span></td>
+            <td>
+              ・インタビュー結果を全体で共有<br>
+              ・クラスの傾向を英語で発表
+            </td>
+            <td>
+              ・"Most students want to study ～." など、集計した結果を英語で伝える場を設ける。
+            </td>
+          </tr>
+          <tr>
+            <td class="time-cell">3分</td>
+            <td><span class="step-label">振返</span></td>
+            <td>
+              ・振り返りシートの記入<br>
+              ・次時の予告
+            </td>
+            <td>
+              ・「伝えられたか」「相手の話を聞けたか」の2点を中心に振り返らせる。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 評価規準 -->
+    <div class="doc-section">
+      <div class="doc-section-title">本時の評価規準</div>
+      <table>
+        <tr>
+          <th>評価規準</th>
+          <td>中学校で学びたい教科について、"I want to study ～. Because ～." の表現を使って友達に伝えることができる。</td>
+        </tr>
+        <tr>
+          <th>評価方法</th>
+          <td>行動観察・ワークシートの確認</td>
+        </tr>
+        <tr>
+          <th>十分満足(A)</th>
+          <td>教科名と理由の両方を英語で伝え、相手の話への反応も示しながら会話を続けている。</td>
+        </tr>
+        <tr>
+          <th>概ね満足(B)</th>
+          <td>教科名を英語で伝えることができる。</td>
+        </tr>
+        <tr>
+          <th>要支援(C)</th>
+          <td>フラッシュカードや教師の支援を活用して、教科名を伝える。</td>
+        </tr>
+      </table>
+    </div>
+
+  </div><!-- /doc-body -->
+
+  <!-- フッター -->
+  <div class="doc-footer">
+    <span>◯◯市立◯◯小学校 外国語研究サイト</span>
+    <span>2026年度 第5学年 外国語科 Unit 3</span>
+  </div>
+
+</div>
+
+</body>
+</html>
