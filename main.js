@@ -49,11 +49,26 @@ async function loadFromFirebase() {
       if (saved.trainings && !saved.sections) window.SITE_DATA.trainings = saved.trainings;
     }
 
-    // パスワードはセキュリティ上localStorageのみで管理
+    // パスワードの管理：
+    // バージョンが変わった場合は保存パスワードをクリアして content.js の値を使う
     const rawLocal = localStorage.getItem('research_site_data');
     if (rawLocal) {
-      const local = JSON.parse(rawLocal);
-      if (local._adminPassword) window.ADMIN_PASSWORD = local._adminPassword;
+      try {
+        const local = JSON.parse(rawLocal);
+        const savedVersion = local._siteVersion;
+        const currentVersion = window.SITE_VERSION;
+
+        if (savedVersion !== currentVersion) {
+          // バージョンが変わった → LocalStorage のパスワードを削除して content.js の値を使う
+          delete local._adminPassword;
+          local._siteVersion = currentVersion;
+          localStorage.setItem('research_site_data', JSON.stringify(local));
+          console.info('[Auth] バージョン更新によりパスワードをリセットしました');
+        } else if (local._adminPassword) {
+          // バージョンが同じで保存パスワードがある場合はそちらを使う
+          window.ADMIN_PASSWORD = local._adminPassword;
+        }
+      } catch(e) {}
     }
   } catch (e) {
     console.error('Firebaseからのデータ読み込みに失敗しました:', e);
@@ -66,7 +81,14 @@ async function loadFromFirebase() {
         if (saved.news)         window.SITE_DATA.news         = saved.news;
         if (saved.sections)     window.SITE_DATA.sections     = saved.sections;
         if (saved.sectionItems) window.SITE_DATA.sectionItems = saved.sectionItems;
-        if (saved._adminPassword) window.ADMIN_PASSWORD = saved._adminPassword;
+        // バージョンチェック
+        if (saved._siteVersion !== window.SITE_VERSION) {
+          delete saved._adminPassword;
+          saved._siteVersion = window.SITE_VERSION;
+          localStorage.setItem('research_site_data', JSON.stringify(saved));
+        } else if (saved._adminPassword) {
+          window.ADMIN_PASSWORD = saved._adminPassword;
+        }
       }
     } catch(err) {}
   }

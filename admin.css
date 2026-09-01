@@ -6,16 +6,16 @@
    共通変数
 ───────────────────────────────────────────────────── */
 :root {
-  --admin-bg:       #0f1321;
-  --admin-surface:  #171e32;
-  --admin-surface2: #1e2640;
-  --admin-border:   rgba(255,255,255,0.08);
-  --admin-text:     #d8e0f0;
-  --admin-muted:    #6a7a9b;
-  --admin-accent:   #4a8fe8;
-  --admin-teal:     #2ab5b5;
-  --admin-danger:   #f06060;
-  --admin-success:  #4caf86;
+  --admin-bg:       #f5f1eb;
+  --admin-surface:  #ffffff;
+  --admin-surface2: #faf8f4;
+  --admin-border:   rgba(140,109,63,0.15);
+  --admin-text:     #2c2420;
+  --admin-muted:    #6b5e55;
+  --admin-accent:   #c0614a;
+  --admin-teal:     #5a7a52;
+  --admin-danger:   #c0614a;
+  --admin-success:  #5a7a52;
   --admin-width:    420px;
 }
 
@@ -25,7 +25,7 @@
 #admin-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(44,36,32,0.55);
   backdrop-filter: blur(4px);
   z-index: 200;
   opacity: 0;
@@ -66,7 +66,7 @@
   padding: 40px 36px;
   width: 100%;
   max-width: 380px;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+  box-shadow: 0 24px 80px rgba(60,40,20,0.2);
   animation: slideUp 0.3s ease-out both;
 }
 
@@ -137,7 +137,7 @@
 .admin-input-group textarea:focus,
 .admin-input-group select:focus {
   border-color: var(--admin-accent);
-  box-shadow: 0 0 0 3px rgba(74,143,232,0.15);
+  box-shadow: 0 0 0 3px rgba(192,97,74,0.15);
 }
 
 .admin-input-group textarea {
@@ -196,7 +196,7 @@
   color: #fff;
 }
 
-.admin-btn--primary:hover { background: #3a7fd5; transform: translateY(-1px); }
+.admin-btn--primary:hover { background: #a84e3b; transform: translateY(-1px); }
 
 .admin-btn--secondary {
   background: var(--admin-surface2);
@@ -204,23 +204,23 @@
   border: 1.5px solid var(--admin-border);
 }
 
-.admin-btn--secondary:hover { color: var(--admin-text); border-color: rgba(255,255,255,0.15); }
+.admin-btn--secondary:hover { color: var(--admin-text); border-color: rgba(140,109,63,0.3); }
 
 .admin-btn--danger {
-  background: rgba(240,96,96,0.12);
+  background: rgba(192,97,74,0.1);
   color: var(--admin-danger);
-  border: 1.5px solid rgba(240,96,96,0.25);
+  border: 1.5px solid rgba(192,97,74,0.25);
 }
 
-.admin-btn--danger:hover { background: rgba(240,96,96,0.22); }
+.admin-btn--danger:hover { background: rgba(192,97,74,0.2); }
 
 .admin-btn--teal {
-  background: rgba(42,181,181,0.15);
+  background: rgba(90,122,82,0.1);
   color: var(--admin-teal);
-  border: 1.5px solid rgba(42,181,181,0.3);
+  border: 1.5px solid rgba(90,122,82,0.25);
 }
 
-.admin-btn--teal:hover { background: rgba(42,181,181,0.25); }
+.admin-btn--teal:hover { background: rgba(90,122,82,0.2); }
 
 /* ─────────────────────────────────────────────────────
    管理パネル（右スライドイン）
@@ -239,7 +239,7 @@
   flex-direction: column;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: -12px 0 48px rgba(0,0,0,0.6);
+  box-shadow: -12px 0 48px rgba(60,40,20,0.15);
 }
 
 #admin-panel.open {
@@ -269,9 +269,9 @@
 .admin-panel__badge {
   font-size: 0.68rem;
   font-weight: 600;
-  background: rgba(74,143,232,0.15);
+  background: rgba(192,97,74,0.1);
   color: var(--admin-accent);
-  border: 1px solid rgba(74,143,232,0.25);
+  border: 1px solid rgba(192,97,74,0.2);
   border-radius: 999px;
   padding: 2px 8px;
 }
@@ -291,7 +291,7 @@
   transition: all 0.2s;
 }
 
-.admin-close-btn:hover { background: rgba(240,96,96,0.15); color: var(--admin-danger); border-color: rgba(240,96,96,0.3); }
+.admin-close-btn:hover { background: rgba(192,97,74,0.1); color: var(--admin-accent); border-color: rgba(192,97,74,0.3); }
 
 /* Panel Tabs */
 .admin-panel__tabs {
@@ -389,7 +389,7 @@
   gap: 6px;
 }
 
-.admin-config-save-btn:hover { background: #3a7fd5; transform: translateY(-1px); }
+.admin-config-save-btn:hover { background: #a84e3b; transform: translateY(-1px); }
 
 .admin-config-save-btn i, .admin-config-save-btn svg { width: 14px; height: 14px; }
 
@@ -414,8 +414,8 @@
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  background: rgba(42,181,181,0.12);
-  border: 1.5px solid rgba(42,181,181,0.3);
+  background: rgba(90,122,82,0.1);
+  border: 1.5px solid rgba(90,122,82,0.25);
   border-radius: 8px;
   font-size: 0.78rem;
   font-weight: 600;
@@ -425,7 +425,7 @@
   font-family: 'Noto Sans JP', sans-serif;
 }
 
-.admin-add-btn:hover { background: rgba(42,181,181,0.22); }
+.admin-add-btn:hover { background: rgba(90,122,82,0.2); }
 
 .admin-add-btn i, .admin-add-btn svg { width: 13px; height: 13px; }
 
@@ -446,7 +446,7 @@
   transition: border-color 0.2s;
 }
 
-.admin-list-item:hover { border-color: rgba(255,255,255,0.14); }
+.admin-list-item:hover { border-color: rgba(192,97,74,0.2); }
 
 .admin-list-item__body { flex: 1; min-width: 0; }
 
@@ -490,8 +490,8 @@
 
 .admin-icon-btn i, .admin-icon-btn svg { width: 13px; height: 13px; }
 
-.admin-icon-btn--edit:hover   { background: rgba(74,143,232,0.15); border-color: rgba(74,143,232,0.3); }
-.admin-icon-btn--delete:hover { background: rgba(240,96,96,0.15); border-color: rgba(240,96,96,0.3); }
+.admin-icon-btn--edit:hover   { background: rgba(90,122,82,0.12); border-color: rgba(90,122,82,0.3); color: var(--admin-teal); }
+.admin-icon-btn--delete:hover { background: rgba(192,97,74,0.12); border-color: rgba(192,97,74,0.3); color: var(--admin-danger); }
 
 /* Panel Footer */
 .admin-panel__footer {
