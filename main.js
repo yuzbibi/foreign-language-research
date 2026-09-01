@@ -100,6 +100,7 @@ async function loadFromFirebase() {
 window.renderAll = function () {
   migrateDataIfNeeded();
   renderSiteConfig();
+  renderHeroNews();
   renderDynamicNav();
   renderDynamicSections();
   // Lucide SVGアイコンに変換（静的および動的生成分）
@@ -155,7 +156,15 @@ function renderSiteConfig() {
 // ─────────────────────────────────────────────────────
 // ヒーロー最新お知らせ（上位2件）
 // ─────────────────────────────────────────────────────
-</span>
+function renderHeroNews() {
+  const container = document.getElementById('hero-news-list');
+  if (!container) return;
+
+  const items = window.SITE_DATA.news;
+  container.innerHTML = items.length
+    ? items.map(item => `
+        <div class="hero-news__item">
+          <span class="hero-news__date">${formatDate(item.date)}</span>
           <a href="${item.url || '#'}">${item.title}</a>
         </div>`).join('')
     : '<div class="hero-news__item"><span style="color:rgba(255,255,255,.4)">お知らせはありません</span></div>';
@@ -209,14 +218,15 @@ function renderDocumentListHTML(items) {
           <i data-lucide="${categoryIcon(doc.category)}"></i>
         </div>
         <div class="doc-card__body">
+          <div class="doc-card__category doc-card__category--${catCls}">${doc.category || '分類なし'}</div>
           <div class="doc-card__title">${doc.title}</div>
           <div class="doc-card__desc">${doc.description || ''}</div>
         </div>
         <div class="doc-card__footer">
           <span class="doc-card__date">${formatDate(doc.date)}</span>
           ${doc.url && doc.url.startsWith('idb:') 
-            ? `<a href="#" data-idb-url="${doc.url}" class="doc-card__download"><i data-lucide="download"></i> </a>`
-            : `<a href="${doc.url || '#'}" target="_blank" rel="noopener" class="doc-card__download"><i data-lucide="download"></i> </a>`
+            ? `<a href="#" data-idb-url="${doc.url}" class="doc-card__download"><i data-lucide="download"></i> ${doc.fileType || 'PDF'}</a>`
+            : `<a href="${doc.url || '#'}" target="_blank" rel="noopener" class="doc-card__download"><i data-lucide="download"></i> ${doc.fileType || 'PDF'}</a>`
           }
         </div>
       </div>`;

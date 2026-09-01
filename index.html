@@ -48,6 +48,13 @@
         </div>
         <h1 class="hero-title" data-catch-copy>子どもたちの「伝えたい」を育てる</h1>
         <p class="hero-subtitle" data-sub-copy>外国語教育の充実を目指す教員のための研究・実践情報サイト</p>
+        <div class="hero-news" aria-label="最新のお知らせ">
+          <div class="hero-news__label">
+            <i data-lucide="bell"></i>
+            最新のお知らせ
+          </div>
+          <div id="hero-news-list"><!-- JS --></div>
+        </div>
       </div>
     </section>
 
@@ -112,6 +119,7 @@
     <div class="admin-panel__tabs" role="tablist" id="admin-tabs">
       <button class="admin-tab-btn active" data-tab="config"    role="tab"><i data-lucide="settings"></i> 基本設定</button>
       <button class="admin-tab-btn"        data-tab="sections"  role="tab"><i data-lucide="layout"></i> セクション管理</button>
+      <button class="admin-tab-btn"        data-tab="news"      role="tab"><i data-lucide="bell"></i> お知らせ</button>
       <!-- 動的タブはここに追加 -->
     </div>
 
@@ -178,7 +186,16 @@
         </div>
       </div>
 
-      
+      <!-- お知らせタブ -->
+      <div class="admin-tab-content" data-tab-content="news">
+        <div class="admin-list-header">
+          <div class="admin-list-title">お知らせ一覧</div>
+          <button class="admin-add-btn" id="admin-add-news" type="button">
+            <i data-lucide="plus"></i> 追加
+          </button>
+        </div>
+        <div class="admin-item-list" id="admin-list-news"><!-- JS --></div>
+      </div>
 
       <!-- セクション管理タブ -->
       <div class="admin-tab-content" data-tab-content="sections">
