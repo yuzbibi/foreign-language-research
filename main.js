@@ -213,7 +213,10 @@ function renderDocumentListHTML(items) {
     const thumbCls = categoryThumbClass(doc.category);
     const catCls = categoryBadgeClass(doc.category);
     return `
-      <div class="doc-card">
+            ${doc.url && doc.url.startsWith('idb:') 
+        ? `<a href="#" data-idb-url="${doc.url}" class="doc-card" style="text-decoration:none; color:inherit;">`
+        : `<a href="${doc.url || '#'}" target="_blank" rel="noopener" class="doc-card" style="text-decoration:none; color:inherit;">`
+      }
         <div class="doc-card__thumb doc-card__thumb--${thumbCls}">
           <i data-lucide="${categoryIcon(doc.category)}"></i>
         </div>
@@ -223,12 +226,8 @@ function renderDocumentListHTML(items) {
         </div>
         <div class="doc-card__footer">
           <span class="doc-card__date">${formatDate(doc.date)}</span>
-          ${doc.url && doc.url.startsWith('idb:') 
-            ? `<a href="#" data-idb-url="${doc.url}" class="doc-card__download"><i data-lucide="download"></i> </a>`
-            : `<a href="${doc.url || '#'}" target="_blank" rel="noopener" class="doc-card__download"><i data-lucide="download"></i> </a>`
-          }
         </div>
-      </div>`;
+      </a>`;
   }).join('');
   return `<div class="docs-grid">${cards}</div>`;
 }
