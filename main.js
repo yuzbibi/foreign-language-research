@@ -101,7 +101,6 @@ window.renderAll = function () {
   migrateDataIfNeeded();
   renderSiteConfig();
   renderHeroNews();
-  renderNewsList();
   renderDynamicNav();
   renderDynamicSections();
   // Lucide SVGアイコンに変換（静的および動的生成分）
@@ -133,7 +132,6 @@ function renderDynamicNav() {
   nav.innerHTML = `
     <a href="#home" class="nav-link active" id="nav-home">ホーム</a>
     ${links}
-    <a href="#news" class="nav-link" id="nav-news">お知らせ</a>
   `;
 }
 
@@ -162,7 +160,7 @@ function renderHeroNews() {
   const container = document.getElementById('hero-news-list');
   if (!container) return;
 
-  const items = window.SITE_DATA.news.slice(0, 2);
+  const items = window.SITE_DATA.news;
   container.innerHTML = items.length
     ? items.map(item => `
         <div class="hero-news__item">
@@ -170,42 +168,6 @@ function renderHeroNews() {
           <a href="${item.url || '#'}">${item.title}</a>
         </div>`).join('')
     : '<div class="hero-news__item"><span style="color:rgba(255,255,255,.4)">お知らせはありません</span></div>';
-}
-
-// ─────────────────────────────────────────────────────
-// ニュース一覧
-// ─────────────────────────────────────────────────────
-const NEWS_INITIAL = 5;
-let newsExpanded = false;
-
-function renderNewsList() {
-  const container = document.getElementById('news-list');
-  if (!container) return;
-
-  const items = newsExpanded
-    ? window.SITE_DATA.news
-    : window.SITE_DATA.news.slice(0, NEWS_INITIAL);
-
-  container.innerHTML = items.map(item => `
-    <div class="news-item">
-      <span class="news-item__date">${formatDate(item.date)}</span>
-      <span class="news-item__badge ${categoryBadgeClass(item.category)}">${item.category}</span>
-      <span class="news-item__title"><a href="${item.url || '#'}">${item.title}</a></span>
-    </div>`).join('');
-
-  const moreBtn = document.getElementById('news-more-btn');
-  if (moreBtn) {
-    moreBtn.style.display =
-      (!newsExpanded && window.SITE_DATA.news.length > NEWS_INITIAL) ? 'inline-flex' : 'none';
-
-    if (!moreBtn._bound) {
-      moreBtn.addEventListener('click', () => {
-        newsExpanded = true;
-        renderNewsList();
-      });
-      moreBtn._bound = true;
-    }
-  }
 }
 
 // ─────────────────────────────────────────────────────

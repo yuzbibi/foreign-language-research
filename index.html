@@ -23,7 +23,6 @@
 
       <nav class="site-nav" aria-label="メインナビゲーション" id="main-nav">
         <a href="#home" class="nav-link active" id="nav-home">ホーム</a>
-        <a href="#news" class="nav-link" id="nav-news">お知らせ</a>
         <!-- 動的ナビゲーションリンクがここに追加されます -->
       </nav>
 
@@ -61,23 +60,6 @@
 
     <!-- カテゴリカードはユーザーの要望により削除 -->
 
-    <!-- ニュース（全幅） -->
-    <section id="news" class="section section--dark fade-section" aria-label="お知らせ">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title" data-config="newsSecTitle">ニュース &amp; お知らせ</h2>
-            <p class="section-subtitle" data-config="newsSecDesc">最新の研究・研修情報をお届けします</p>
-          </div>
-        </div>
-        <div id="news-list" role="list" aria-label="お知らせ一覧"><!-- JS --></div>
-        <button class="btn-more" id="news-more-btn" type="button">
-          もっと見る
-          <i data-lucide="chevron-down"></i>
-        </button>
-      </div>
-    </section>
-
     <!-- 動的セクションコンテナ -->
     <div id="dynamic-sections">
       <!-- JS -->
@@ -88,8 +70,6 @@
   <!-- フッター -->
   <footer id="site-footer" role="contentinfo">
     <div class="container">
-      <div class="footer-logo" data-site-name></div>
-      <div class="footer-school" data-school-name></div>
       <div class="footer-copy">&copy; <span data-year></span> All Rights Reserved.</div>
     </div>
   </footer>
@@ -167,14 +147,6 @@
           <div class="admin-input-group">
             <label for="config_subCopy">サブコピー（説明文）</label>
             <input type="text" id="config_subCopy" placeholder="外国語教育の充実を目指す..." />
-          </div>
-          <div class="admin-input-group">
-            <label for="config_newsSecTitle">お知らせセクション: タイトル</label>
-            <input type="text" id="config_newsSecTitle" placeholder="ニュース & お知らせ" />
-          </div>
-          <div class="admin-input-group">
-            <label for="config_newsSecDesc">お知らせセクション: 説明</label>
-            <textarea id="config_newsSecDesc" placeholder="最新の研究・研修情報を..."></textarea>
           </div>
 
           <button class="admin-config-save-btn" id="admin-config-save" type="button">
@@ -276,6 +248,7 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="filestore.js"></script>
   <script src="data/content.js?v=3"></script>
   <script src="main.js?v=3"></script>
   <script src="admin.js?v=5"></script>

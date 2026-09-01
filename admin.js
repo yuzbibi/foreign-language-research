@@ -250,6 +250,41 @@ function buildFieldHTML(field, value) {
     return `<select id="${id}" name="${field.key}">${options}</select>`;
   }
 
+  if (field.key === 'url') {
+    return `<div style="display:flex; gap:8px;">
+      <input type="text" id="${id}" name="${field.key}" value="${escapeHtml(value)}" placeholder="${field.placeholder || ''}" style="flex:1;" />
+      <button type="button" class="admin-btn admin-btn--secondary" onclick="document.getElementById('file_${id}').click()" style="padding:0 8px;"><i data-lucide="upload"></i></button>
+      <input type="file" id="file_${id}" style="display:none;" onchange="
+        if(this.files[0]) {
+          const file = this.files[0];
+          const name = Date.now() + '_' + file.name;
+          showToast('アップロード中...', 'success');
+          if (window.storage) {
+            const ref = window.storage.ref('files/' + name);
+            ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
+              document.getElementById('${id}').value = url;
+              showToast('アップロード完了', 'success');
+            }).catch(e => {
+              console.error(e);
+              fallbackIdb(name, file);
+            });
+          } else {
+            fallbackIdb(name, file);
+          }
+
+          function fallbackIdb(n, f) {
+            if(window.fsSave) {
+              window.fsSave(n, f).then(() => {
+                document.getElementById('${id}').value = 'idb:' + n;
+                showToast('端末内に保存しました', 'success');
+              }).catch(e => showToast('失敗: '+e, 'error'));
+            }
+          }
+        }
+      " />
+    </div>`;
+  }
+
   return `<input type="${field.type}" id="${id}" name="${field.key}" value="${escapeHtml(value)}" placeholder="${field.placeholder || ''}" />`;
 }
 
@@ -289,25 +324,13 @@ async function saveEditItem() {
   }
 
   if (editingIndex === null) {
-    arr.push(newItem); // 追加は末尾（リストの場合は）お知らせは先頭かもですが、シンプルにpushかunshiftか
-    if (editingType === 'news') {
-      arr.pop(); // oops, wait let's just unshift everything except sections maybe?
-      arr.unshift(newItem); // actually, let's just unshift if not section
+    if (editingType === 'sections') {
+      arr.push(newItem); // セクションは末尾に追加
+    } else {
+      arr.unshift(newItem); // それ以外のアイテムは先頭（最新）に追加
     }
   } else {
     arr[editingIndex] = newItem;
-  }
-
-  // 整理
-  if (editingType === 'sections' && editingIndex === null) {
-    arr.pop(); // remove from end
-    arr.push(newItem); // push sections to end
-  } else if (editingIndex === null) {
-    // unshift for items (newest first)
-    if (editingType !== 'sections') {
-       arr.pop(); // remove undefined oops
-       arr.unshift(newItem);
-    }
   }
 
   window._adminSelectedFile = null;
@@ -332,7 +355,22 @@ async function deleteItem(type, index) {
   // もしセクション自体を削除する場合、中のアイテムも消す
   if (type === 'sections') {
     const secId = arr[index].id;
+    const items = window.SITE_DATA.sectionItems[secId] || [];
+    for (const item of items) {
+      if (item.url && item.url.startsWith('idb:') && window.fsDelete) {
+        await window.fsDelete(item.url.replace(/^idb:/, '')).catch(() => {});
+      } else if (item.url && item.url.includes('firebasestorage') && window.storage) {
+        await window.storage.refFromURL(item.url).delete().catch(() => {});
+      }
+    }
     delete window.SITE_DATA.sectionItems[secId];
+  } else {
+    const item = arr[index];
+    if (item && item.url && item.url.startsWith('idb:') && window.fsDelete) {
+      await window.fsDelete(item.url.replace(/^idb:/, '')).catch(() => {});
+    } else if (item && item.url && item.url.includes('firebasestorage') && window.storage) {
+      await window.storage.refFromURL(item.url).delete().catch(() => {});
+    }
   }
 
   arr.splice(index, 1);
@@ -346,8 +384,7 @@ async function deleteItem(type, index) {
 // 基本設定の保存
 async function saveConfig() {
   const fields = [
-    'siteName','schoolName','catchCopy','subCopy',
-    'newsSecTitle','newsSecDesc'
+    'siteName','schoolName','catchCopy','subCopy'
   ];
   fields.forEach(key => {
     const el = document.getElementById(`config_${key}`);
@@ -371,6 +408,7 @@ function savePassword() {
   // パスワードはlocalStorageに保存
   const saved = getSavedData();
   saved._adminPassword = newPw;
+  saved._siteVersion = window.SITE_VERSION;
   localStorage.setItem('research_site_data', JSON.stringify(saved));
 
   document.getElementById('admin-new-pw').value     = '';
@@ -408,8 +446,7 @@ function renderCurrentTab() {
 function renderConfigTab() {
   const c = window.SITE_DATA.config;
   const fields = [
-    'siteName','schoolName','catchCopy','subCopy',
-    'newsSecTitle','newsSecDesc'
+    'siteName','schoolName','catchCopy','subCopy'
   ];
   fields.forEach(key => {
     const el = document.getElementById(`config_${key}`);
