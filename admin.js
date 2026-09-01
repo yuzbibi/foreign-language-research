@@ -9,12 +9,6 @@
 // フィールド定義（各データ型のフォーム構造）
 // ─────────────────────────────────────────────────────
 const ADMIN_SCHEMAS = {
-  news: [
-    { key: 'date',     label: '日付',     type: 'date' },
-    { key: 'title',    label: 'タイトル', type: 'text',     placeholder: 'お知らせのタイトル' },
-    { key: 'category', label: 'カテゴリ', type: 'select',   options: ['お知らせ','その他'] },
-    { key: 'url',      label: 'リンクURL',type: 'text',     placeholder: 'https://... または #' },
-  ],
   sections: [
     { key: 'id',          label: 'ID (自動生成)', type: 'text', placeholder: 'sec_xxx (自動入力)', readonly: true },
     { key: 'title',       label: 'セクション名', type: 'text', placeholder: '例: 授業資料' },
@@ -39,7 +33,6 @@ const ADMIN_SCHEMAS = {
 };
 
 const TAB_LABELS = {
-  news:         { label: 'お知らせ',   icon: 'bell',      keyTitle: 'title' },
   sections:     { label: 'セクション', icon: 'layout',    keyTitle: 'title' },
   documentList: { label: '資料',       icon: 'file-text', keyTitle: 'title' },
   scheduleList: { label: '研修',       icon: 'calendar',  keyTitle: 'title' }
@@ -555,7 +548,6 @@ function getSavedData() {
 async function saveToFirebase() {
   const saved = {
     config: { ...window.SITE_DATA.config },
-    news: [...window.SITE_DATA.news],
     sections: JSON.parse(JSON.stringify(window.SITE_DATA.sections)),
     sectionItems: JSON.parse(JSON.stringify(window.SITE_DATA.sectionItems))
   };
