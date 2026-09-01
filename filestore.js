@@ -1,87 +1,85 @@
 /**
- * =====================================================
- *  filestore.js — 端末ファイルストレージ（IndexedDB）
- *
- *  アップロードされたPDF等をブラウザのIndexedDBに保存します。
- *  ※ このファイルは編集不要です
- * =====================================================
+ * ファイルのローカル保存 (IndexedDB fallback)
  */
 
-const FS_DB_NAME  = 'research_site_files';
-const FS_STORE    = 'files';
-const FS_VERSION  = 1;
+const FS_DB = 'AGY_LocalFiles';
+const FS_STORE = 'files';
 
-let _fsDb = null;
-
-/** IDB接続を開く */
-function fsOpen() {
-  if (_fsDb) return Promise.resolve(_fsDb);
+function getFsDb() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(FS_DB_NAME, FS_VERSION);
+    const req = indexedDB.open(FS_DB, 1);
     req.onupgradeneeded = e => {
-      e.target.result.createObjectStore(FS_STORE, { keyPath: 'name' });
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(FS_STORE)) {
+        db.createObjectStore(FS_STORE);
+      }
     };
-    req.onsuccess = e => { _fsDb = e.target.result; resolve(_fsDb); };
-    req.onerror   = e => reject(e.target.error);
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e.target.error);
   });
 }
 
-/** ファイルを保存する */
-window.fsSave = async function(name, file) {
-  const db = await fsOpen();
+window.fsSave = async function(name, fileBlob) {
+  const db = await getFsDb();
   return new Promise((resolve, reject) => {
     const tx = db.transaction(FS_STORE, 'readwrite');
-    tx.objectStore(FS_STORE).put({
-      name,
-      file,
-      size:    file.size,
-      type:    file.type,
-      savedAt: Date.now(),
-    });
+    tx.objectStore(FS_STORE).put(fileBlob, name);
     tx.oncomplete = resolve;
-    tx.onerror    = e => reject(e.target.error);
+    tx.onerror = e => reject(e.target.error);
   });
 };
 
-/** ファイルを取得する */
 window.fsGet = async function(name) {
-  const db = await fsOpen();
+  const db = await getFsDb();
   return new Promise((resolve, reject) => {
-    const req = db.transaction(FS_STORE).objectStore(FS_STORE).get(name);
-    req.onsuccess = e => resolve(e.target.result?.file || null);
-    req.onerror   = e => reject(e.target.error);
+    const tx = db.transaction(FS_STORE, 'readonly');
+    const req = tx.objectStore(FS_STORE).get(name);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e.target.error);
   });
 };
 
-/** ファイルを削除する */
 window.fsDelete = async function(name) {
-  const db = await fsOpen();
+  const db = await getFsDb();
   return new Promise((resolve, reject) => {
     const tx = db.transaction(FS_STORE, 'readwrite');
     tx.objectStore(FS_STORE).delete(name);
     tx.oncomplete = resolve;
-    tx.onerror    = e => reject(e.target.error);
+    tx.onerror = e => reject(e.target.error);
   });
 };
 
-/** IDB URLを使ってファイルをブラウザで開く（idb:ファイル名） */
 window.fsOpenFile = async function(idbUrl) {
   const name = idbUrl.replace(/^idb:/, '');
+  
+  // ポップアップブロック回避のため、先に空のウィンドウを開く
+  let newWin = null;
+  try {
+    newWin = window.open('about:blank', '_blank');
+  } catch(e) {}
+
   try {
     const blob = await window.fsGet(name);
     if (!blob) {
+      if (newWin) newWin.close();
       alert('ファイルが見つかりません。\n管理パネルから再度アップロードしてください。');
       return;
     }
     const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+    
+    if (newWin) {
+      newWin.location.href = url;
+    } else {
+      window.location.href = url;
+    }
+    
     setTimeout(() => URL.revokeObjectURL(url), 15000);
   } catch(e) {
+    if (newWin) newWin.close();
     alert('ファイルを開けませんでした: ' + e.message);
   }
 };
 
-/** クリックイベントの委譲（idbリンクを処理） */
 document.addEventListener('click', e => {
   const link = e.target.closest('[data-idb-url]');
   if (link) {
