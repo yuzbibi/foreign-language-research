@@ -41,8 +41,8 @@
     
     <div id="private-message" style="display: none; text-align: center; padding: 100px 20px; min-height: 60vh; flex-direction: column; justify-content: center; align-items: center;">
       <i data-lucide="lock" style="width: 48px; height: 48px; color: var(--admin-muted); margin-bottom: 20px;"></i>
-      <h2 style="color: var(--color-text-main); margin-bottom: 10px;">現在、このサイトは非公開に設定されています</h2>
-      <p style="color: var(--admin-muted);">管理者は右上の「管理者ログイン」からログインしてください。</p>
+      <h2 style="color: var(--color-text-main); margin-bottom: 10px;" data-config="privateMessageTitle">現在、このサイトは非公開に設定されています</h2>
+      <p style="color: var(--admin-muted);" data-config="privateMessageText">管理者は右上の「管理者ログイン」からログインしてください。</p>
     </div>
 
     <!-- ヒーロー -->
@@ -160,6 +160,14 @@
               <option value="false">公開（誰でも閲覧可能）</option>
               <option value="true">非公開（管理者のみ閲覧可能）</option>
             </select>
+          </div>
+          <div class="admin-input-group">
+            <label for="config_privateMessageTitle">非公開時のタイトル（大見出し）</label>
+            <input type="text" id="config_privateMessageTitle" placeholder="例: 現在、このサイトは非公開に設定されています" />
+          </div>
+          <div class="admin-input-group">
+            <label for="config_privateMessageText">非公開時のメッセージ（説明文）</label>
+            <input type="text" id="config_privateMessageText" placeholder="例: 管理者は右上の「管理者ログイン」からログインしてください。" />
           </div>
 
           <button class="admin-config-save-btn" id="admin-config-save" type="button">

@@ -386,7 +386,8 @@ async function deleteItem(type, index) {
 // 基本設定の保存
 async function saveConfig() {
   const fields = [
-    'siteName','schoolName','catchCopy','subCopy','isPrivate'
+    'siteName','schoolName','catchCopy','subCopy','isPrivate',
+    'privateMessageTitle','privateMessageText'
   ];
   fields.forEach(key => {
     const el = document.getElementById(`config_${key}`);
@@ -448,7 +449,8 @@ function renderCurrentTab() {
 function renderConfigTab() {
   const c = window.SITE_DATA.config;
   const fields = [
-    'siteName','schoolName','catchCopy','subCopy','isPrivate'
+    'siteName','schoolName','catchCopy','subCopy','isPrivate',
+    'privateMessageTitle','privateMessageText'
   ];
   fields.forEach(key => {
     const el = document.getElementById(`config_${key}`);
