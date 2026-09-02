@@ -28,6 +28,12 @@ async function loadFromFirebase() {
       // Firestoreにデータが無い場合は、localStorageから引き継いでFirestoreに初期保存
       const raw = localStorage.getItem('research_site_data');
       if (raw) saved = JSON.parse(raw);
+      
+      // Migration: Inject isPrivate if it doesn't exist in saved data
+      if (saved && saved.config && typeof saved.config.isPrivate === 'undefined') {
+        saved.config.isPrivate = window.SITE_DATA.config.isPrivate || 'false';
+      }
+
       if (saved) {
         await docRef.set({
           config: saved.config || window.SITE_DATA.config,
@@ -39,6 +45,11 @@ async function loadFromFirebase() {
     }
 
     if (saved) {
+      // Migration: Inject isPrivate if it doesn't exist in loaded data
+      if (saved.config && typeof saved.config.isPrivate === 'undefined') {
+        saved.config.isPrivate = window.SITE_DATA.config.isPrivate || 'false';
+      }
+
       if (saved.config)       Object.assign(window.SITE_DATA.config, saved.config);
       if (saved.news)         window.SITE_DATA.news         = saved.news;
       if (saved.sections)     window.SITE_DATA.sections     = saved.sections;
@@ -77,6 +88,10 @@ async function loadFromFirebase() {
       const raw = localStorage.getItem('research_site_data');
       if (raw) {
         const saved = JSON.parse(raw);
+        // Migration
+        if (saved.config && typeof saved.config.isPrivate === 'undefined') {
+          saved.config.isPrivate = window.SITE_DATA.config.isPrivate || 'false';
+        }
         if (saved.config)       Object.assign(window.SITE_DATA.config, saved.config);
         if (saved.news)         window.SITE_DATA.news         = saved.news;
         if (saved.sections)     window.SITE_DATA.sections     = saved.sections;
@@ -100,9 +115,28 @@ async function loadFromFirebase() {
 window.renderAll = function () {
   migrateDataIfNeeded();
   renderSiteConfig();
-  renderHeroNews();
-  renderDynamicNav();
-  renderDynamicSections();
+
+  const isPrivate = window.SITE_DATA.config.isPrivate === 'true' || window.SITE_DATA.config.isPrivate === true;
+  const privateMsg = document.getElementById('private-message');
+  const heroSection = document.getElementById('home');
+  const dynamicSections = document.getElementById('dynamic-sections');
+
+  if (isPrivate && !window.adminLoggedIn) {
+    if (privateMsg) privateMsg.style.display = 'flex';
+    if (heroSection) heroSection.style.display = 'none';
+    if (dynamicSections) dynamicSections.style.display = 'none';
+    const nav = document.getElementById('main-nav');
+    if (nav) nav.innerHTML = '';
+  } else {
+    if (privateMsg) privateMsg.style.display = 'none';
+    if (heroSection) heroSection.style.display = 'block';
+    if (dynamicSections) dynamicSections.style.display = 'block';
+
+    renderHeroNews();
+    renderDynamicNav();
+    renderDynamicSections();
+  }
+
   // Lucide SVGアイコンに変換（静的および動的生成分）
   if (window.lucide) lucide.createIcons();
 };

@@ -48,7 +48,7 @@ const TAB_LABELS = {
 // ─────────────────────────────────────────────────────
 // 状態管理
 // ─────────────────────────────────────────────────────
-let adminLoggedIn   = false;
+window.adminLoggedIn   = false;
 let currentTab      = 'config';
 let editingType     = null;   // 'news' | 'sections' | 'sec_xxx'
 let editingSchema   = null;   // schemas key
@@ -60,7 +60,7 @@ let editingIndex    = null;   // null = 新規追加, number = 編集
 function initAdmin() {
   // ログインボタン
   document.getElementById('admin-login-trigger').addEventListener('click', () => {
-    if (adminLoggedIn) {
+    if (window.adminLoggedIn) {
       openAdminPanel();
     } else {
       openLoginModal();
@@ -119,7 +119,7 @@ function handleLogin() {
 
   const val = input.value.trim().normalize("NFKC");
   if (val === window.ADMIN_PASSWORD) {
-    adminLoggedIn = true;
+    window.adminLoggedIn = true;
     input.value = '';
     error.textContent = '';
     closeLoginModal();
@@ -130,6 +130,7 @@ function handleLogin() {
     if (window.lucide) lucide.createIcons();
 
     openAdminPanel();
+    if (window.renderAll) window.renderAll();
   } else {
     error.textContent = 'パスワードが正しくありません';
     input.select();
@@ -137,7 +138,7 @@ function handleLogin() {
 }
 
 function handleLogout() {
-  adminLoggedIn = false;
+  window.adminLoggedIn = false;
   closeAdminPanel();
 
   const trigger = document.getElementById('admin-login-trigger');
@@ -146,6 +147,7 @@ function handleLogout() {
   if (window.lucide) lucide.createIcons();
 
   showToast('ログアウトしました', 'success');
+  if (window.renderAll) window.renderAll();
 }
 
 // ─────────────────────────────────────────────────────
@@ -159,7 +161,7 @@ function openLoginModal() {
 
 function closeLoginModal() {
   document.getElementById('admin-login-modal').classList.remove('visible');
-  if (!adminLoggedIn) {
+  if (!window.adminLoggedIn) {
     document.getElementById('admin-overlay').classList.remove('visible');
   }
   document.getElementById('admin-login-error').textContent = '';
@@ -223,7 +225,7 @@ function openEditModal(type, index, schemaOverride) {
 
 function closeEditModal() {
   document.getElementById('admin-edit-modal').classList.remove('visible');
-  if (adminLoggedIn) {
+  if (window.adminLoggedIn) {
     document.getElementById('admin-overlay').classList.add('visible');
   } else {
     document.getElementById('admin-overlay').classList.remove('visible');
@@ -384,7 +386,7 @@ async function deleteItem(type, index) {
 // 基本設定の保存
 async function saveConfig() {
   const fields = [
-    'siteName','schoolName','catchCopy','subCopy'
+    'siteName','schoolName','catchCopy','subCopy','isPrivate'
   ];
   fields.forEach(key => {
     const el = document.getElementById(`config_${key}`);
@@ -446,11 +448,17 @@ function renderCurrentTab() {
 function renderConfigTab() {
   const c = window.SITE_DATA.config;
   const fields = [
-    'siteName','schoolName','catchCopy','subCopy'
+    'siteName','schoolName','catchCopy','subCopy','isPrivate'
   ];
   fields.forEach(key => {
     const el = document.getElementById(`config_${key}`);
-    if (el) el.value = c[key] || '';
+    if (el) {
+      if (key === 'isPrivate') {
+        el.value = c[key] === 'true' || c[key] === true ? 'true' : 'false';
+      } else {
+        el.value = c[key] || '';
+      }
+    }
   });
 }
 

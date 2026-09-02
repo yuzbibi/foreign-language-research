@@ -306,9 +306,8 @@
 .admin-panel__tabs::-webkit-scrollbar { display: none; }
 
 .admin-tab-btn {
-  flex: 1;
-  min-width: 0;
-  padding: 12px 6px;
+  flex: 0 0 auto;
+  padding: 12px 12px;
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--admin-muted);
