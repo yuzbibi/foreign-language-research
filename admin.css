@@ -512,10 +512,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-md);
+  padding: 12px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
 }
 
 #admin-edit-modal.visible {
@@ -536,6 +539,37 @@
   animation: slideUp 0.25s ease-out both;
   scrollbar-width: thin;
   scrollbar-color: var(--admin-border) transparent;
+  box-sizing: border-box;
+}
+
+@media (max-width: 520px) {
+  #admin-edit-modal {
+    padding: 8px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .admin-edit-card {
+    padding: 20px 16px 18px;
+    border-radius: 14px;
+    max-height: calc(100vh - 40px);
+    max-width: 100%;
+  }
+
+  .admin-edit-card .admin-btn-row {
+    flex-wrap: wrap;
+  }
+
+  .admin-edit-card .admin-btn-row .admin-btn {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .admin-edit-card .admin-input-group input,
+  .admin-edit-card .admin-input-group textarea,
+  .admin-edit-card .admin-input-group select {
+    font-size: 16px; /* prevent iOS zoom on focus */
+  }
 }
 
 .admin-edit-card__title {
@@ -548,6 +582,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  word-break: break-word;
 }
 
 /* Toast Notification */
