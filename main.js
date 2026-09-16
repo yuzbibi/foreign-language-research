@@ -19,7 +19,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadFromFirebase() {
   try {
     const docRef = window.db.collection('siteData').doc('main');
-    const doc = await docRef.get();
+    let doc;
+    try {
+      doc = await docRef.get({ source: 'server' });
+    } catch (serverErr) {
+      // サーバー接続失敗時はキャッシュから取得
+      doc = await docRef.get({ source: 'cache' });
+    }
     
     let saved = null;
     if (doc.exists) {

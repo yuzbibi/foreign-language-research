@@ -469,8 +469,13 @@ function renderListTab(type) {
   if (!listEl) return;
 
   let arr;
+  let schemaType = type; // default schema
   if (type.startsWith('sec_')) {
-    arr = window.SITE_DATA.sectionItems[type.replace('sec_', '')];
+    const secId = type.replace('sec_', '');
+    arr = window.SITE_DATA.sectionItems[secId];
+    // セクション定義から表示形式（スキーマ）を取得
+    const section = window.SITE_DATA.sections.find(s => s.id === secId);
+    if (section) schemaType = section.type; // 'documentList' or 'scheduleList'
   } else {
     arr = window.SITE_DATA[type];
   }
@@ -488,7 +493,7 @@ function renderListTab(type) {
         <div class="admin-list-item__title">${escapeHtml(item.title || item.place || item.id || '')}</div>
       </div>
       <div class="admin-list-item__actions">
-        <button class="admin-icon-btn admin-icon-btn--edit"   onclick="openEditModal('${type}', ${i})" title="編集"><i data-lucide="pencil"></i></button>
+        <button class="admin-icon-btn admin-icon-btn--edit"   onclick="openEditModal('${type}', ${i}, '${schemaType}')" title="編集"><i data-lucide="pencil"></i></button>
         <button class="admin-icon-btn admin-icon-btn--delete" onclick="deleteItem('${type}', ${i})"    title="削除"><i data-lucide="trash-2"></i></button>
       </div>
     </div>
@@ -500,14 +505,28 @@ function renderListTab(type) {
 // ─────────────────────────────────────────────────────
 // localStorage 保存・読み込み
 // ─────────────────────────────────────────────────────
-function openAdminPanel() {
-  renderAdminDynamicTabs();
-  const saved = getSavedData();
-  if (saved.config) window.SITE_DATA.config = { ...window.SITE_DATA.config, ...saved.config };
-  if (saved.news)   window.SITE_DATA.news   = [...saved.news];
-  if (saved.sections) window.SITE_DATA.sections = JSON.parse(JSON.stringify(saved.sections));
-  if (saved.sectionItems) window.SITE_DATA.sectionItems = JSON.parse(JSON.stringify(saved.sectionItems));
+async function openAdminPanel() {
+  // Firebaseから最新データを取得（他のPC・端末での変更を反映）
+  try {
+    const docRef = window.db.collection('siteData').doc('main');
+    const doc = await docRef.get({ source: 'server' });
+    if (doc.exists) {
+      const saved = doc.data();
+      if (saved.config)       Object.assign(window.SITE_DATA.config, saved.config);
+      if (saved.news)         window.SITE_DATA.news         = saved.news;
+      if (saved.sections)     window.SITE_DATA.sections     = saved.sections;
+      if (saved.sectionItems) window.SITE_DATA.sectionItems = saved.sectionItems;
+    }
+  } catch (e) {
+    console.warn('Firebase取得失敗、ローカルデータを使用:', e);
+    const saved = getSavedData();
+    if (saved.config) window.SITE_DATA.config = { ...window.SITE_DATA.config, ...saved.config };
+    if (saved.news)   window.SITE_DATA.news   = [...saved.news];
+    if (saved.sections) window.SITE_DATA.sections = JSON.parse(JSON.stringify(saved.sections));
+    if (saved.sectionItems) window.SITE_DATA.sectionItems = JSON.parse(JSON.stringify(saved.sectionItems));
+  }
 
+  renderAdminDynamicTabs();
   switchTab('config');
   document.getElementById('admin-panel').classList.add('open');
   document.getElementById('admin-overlay').classList.add('visible');
